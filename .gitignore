@@ -1,3 +1,9 @@
 *.json
 *.pyc
 __pycache__/
+venv/
+data/
+__init__.py
+.vscode/
+.mypy_cache/
+.pytest_cache/
