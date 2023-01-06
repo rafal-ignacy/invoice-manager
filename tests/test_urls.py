@@ -14,8 +14,8 @@ def test_templates():
     return {"class": urls, "data": urls_data}
 
 
-def test_get_access_token(test_templates):
-    assert test_templates["class"].get_access_token() == test_templates["data"]["get_access_token"]
+def test_get_ebay_access_token(test_templates):
+    assert test_templates["class"].get_ebay_access_token() == test_templates["data"]["get_ebay_access_token"]
 
 
 @pytest.mark.parametrize("order_id", [("5351206652")])
