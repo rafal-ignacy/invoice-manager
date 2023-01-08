@@ -11,9 +11,9 @@ class WebRequest:
 
     def response(self):
         if self.payload is not None:
-            request = requests.post(self.url, self.headers, json=self.payload, timeout=10)
+            request = requests.post(self.url, headers=self.headers, data=self.payload, timeout=10)
         else:
-            request = requests.get(self.url, self.headers, timeout=10)
+            request = requests.get(self.url, headers=self.headers, timeout=10)
 
         if request.status_code == 200:
             return request.json()
