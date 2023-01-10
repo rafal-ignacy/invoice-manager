@@ -18,51 +18,40 @@ class WebRequests:
         self.logger = Logger()
 
     def get_ebay_access_token(self) -> Dict:
-        url = self.urls.get_ebay_access_token()
-        headers = self.headers.get_ebay_access_token()
-        payload = self.payloads.get_ebay_access_token()
-        request = WebRequest(url, headers, payload)
-        try:
-            response: Dict = request.response()
-            self.logger.info("eBay get access token request")
-        except HTTPError:
-            self.logger.error("eBay get access token request")
-            raise HTTPError
+        url: str = self.urls.get_ebay_access_token()
+        headers: Dict = self.headers.get_ebay_access_token()
+        payload: Dict = self.payloads.get_ebay_access_token()
+        request: WebRequest = WebRequest(url, headers, payload)
+        response: Dict = self.execute_request(request, "eBay get access token")
         return response
 
     def get_orders(self, date: str, access_token: str) -> Dict:
-        url = self.urls.get_orders(date)
-        headers = self.headers.get_orders(access_token)
-        request = WebRequest(url, headers)
-        try:
-            response: Dict = request.response()
-            self.logger.info("eBay get orders")
-        except HTTPError:
-            self.logger.error("eBay get orders")
-            raise HTTPError
+        url: str = self.urls.get_orders(date)
+        headers: Dict = self.headers.get_orders(access_token)
+        request: WebRequest = WebRequest(url, headers)
+        response: Dict = self.execute_request(request, "eBay get orders")
         return response
 
     def get_order(self, order_id: str, access_token: str) -> Dict:
-        url = self.urls.get_order(order_id)
-        headers = self.headers.get_order(access_token)
-        request = WebRequest(url, headers)
-        try:
-            response: Dict = request.response()
-            self.logger.info("eBay get order")
-        except HTTPError:
-            self.logger.error("eBay get order")
-            raise HTTPError
+        url: str = self.urls.get_order(order_id)
+        headers: Dict = self.headers.get_order(access_token)
+        request: WebRequest = WebRequest(url, headers)
+        response: Dict = self.execute_request(request, "eBay get order")
         return response
 
     def create_invoice(self, order_data: Dict) -> Dict:
-        url = self.urls.create_invoice()
-        headers = self.headers.create_invoice()
-        payload = self.payloads.create_invoice(order_data)
-        request = WebRequest(url, headers, payload)
+        url: str = self.urls.create_invoice()
+        headers: Dict = self.headers.create_invoice()
+        payload: Dict = self.payloads.create_invoice(order_data)
+        request: WebRequest = WebRequest(url, headers, payload)
+        response: Dict = self.execute_request(request, "ING API create invoice")
+        return response
+
+    def execute_request(self, request, message) -> Dict:
         try:
             response: Dict = request.response()
-            self.logger.info("ING API create invoice - SUCCESS")
+            self.logger.info(message)
         except HTTPError:
-            self.logger.error("ING API create invoice - ERROR")
+            self.logger.error(message)
             raise HTTPError
         return response
