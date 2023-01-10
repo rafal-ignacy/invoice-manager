@@ -7,3 +7,5 @@ data/
 .vscode/
 .mypy_cache/
 .pytest_cache/
+setup.cfg
+logs/
