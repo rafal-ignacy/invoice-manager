@@ -7,4 +7,11 @@ data/
 .vscode/
 .mypy_cache/
 .pytest_cache/
+<<<<<<< Updated upstream
 setup.cfg
+=======
+setup.cfg
+log
+temp/
+logs/
+>>>>>>> Stashed changes
