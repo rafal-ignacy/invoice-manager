@@ -9,5 +9,5 @@ class OrderDetails:
     payment_status: str
     payment_date: str | None
     currency: str
-    total: float
-    delivery_total: float
+    total: str
+    delivery_total: str
