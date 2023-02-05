@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import Dict, List
 import flatten_json  # type: ignore
 import json
 
@@ -19,18 +19,21 @@ class OrderDataHandler:
             json_data = json.loads(json_file.read())
         return json_data
 
-    def get_details(self, order_dict: Dict) -> Tuple[OrderDetails, CustomerDetails, List[ItemDetails]]:
+    def get_details(self, order_dict: Dict) -> OrderDetails:
         order_dict_flatten: Dict = flatten_json.flatten(order_dict)
-        order_details: OrderDetails = self.get_order_details(order_dict_flatten)
         customer_details: CustomerDetails = self.get_customer_details(order_dict_flatten)
         items_details: List[ItemDetails] = self.get_items_details(order_dict_flatten)
-        return order_details, customer_details, items_details
+        order_details: OrderDetails = self.get_order_details(order_dict_flatten, customer_details, items_details)
+        return order_details
 
-    def get_order_details(self, order_dict_flatten: Dict) -> OrderDetails:
+    def get_order_details(self, order_dict_flatten: Dict, customer_details: CustomerDetails, items_details: List[ItemDetails]) -> OrderDetails:
         object_dict: Dict = {key: order_dict_flatten.get(value) for (key, value) in self.config_data["get_order_details"].items()}
 
-        return OrderDetails(object_dict["order_ebay_id"], object_dict["platform"], object_dict["order_date"], object_dict["currency"],
-                            object_dict["payment_date"], object_dict["payment_status"], object_dict["total"], object_dict["delivery_total"])
+        return OrderDetails(object_dict["order_ebay_id"], object_dict["platform"],
+                            object_dict["order_date"], object_dict["currency"],
+                            object_dict["payment_date"], object_dict["payment_status"],
+                            object_dict["total"], object_dict["delivery_total"],
+                            customer_details, items_details)
 
     def get_customer_details(self, order_dict_flatten) -> CustomerDetails:
         object_dict: Dict = {key: order_dict_flatten.get(value) for (key, value) in self.config_data["get_customer_details"].items()}
