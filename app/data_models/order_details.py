@@ -6,8 +6,8 @@ class OrderDetails:
     order_ebay_id: str
     platform: str
     order_date: str
-    payment_status: str
-    payment_date: str | None
     currency: str
-    total: str
-    delivery_total: str
+    payment_date: str | None
+    payment_status: str
+    total: str | float
+    delivery_total: str | float
