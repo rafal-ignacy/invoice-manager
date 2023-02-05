@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from typing import Tuple
 
 from app.database.db import Database
-from app.data_models.customer_details import CustomerDetails
-from app.data_models.order_details import OrderDetails
-from app.data_models.item_details import ItemDetails
+from app.data_models.order.customer_details import CustomerDetails
+from app.data_models.order.order_details import OrderDetails
+from app.data_models.order.item_details import ItemDetails
 from app.database.db_operations import DatabaseOperations
 
 

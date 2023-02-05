@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Tuple
 
-from app.data_models.item_details import ItemDetails
+from app.data_models.order.item_details import ItemDetails
 from app.utils.date_handler import DateHandler
 
 
