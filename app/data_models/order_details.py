@@ -1,4 +1,8 @@
 from dataclasses import dataclass
+from typing import List
+
+from app.data_models.customer_details import CustomerDetails
+from app.data_models.item_details import ItemDetails
 
 
 @dataclass
@@ -11,3 +15,5 @@ class OrderDetails:
     payment_status: str
     total: str | float
     delivery_total: str | float
+    customer_details: CustomerDetails
+    items_details: List[ItemDetails]
