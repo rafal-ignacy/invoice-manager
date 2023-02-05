@@ -9,7 +9,7 @@ from app.database.db_operations import DatabaseOperations
 
 
 @dataclass
-class OrdersDatabaseOperations (DatabaseOperations):
+class OrdersDatabaseOperations(DatabaseOperations):
     def __init__(self):
         self.queries_data = self.get_queries_data()
 
@@ -34,7 +34,7 @@ class OrdersDatabaseOperations (DatabaseOperations):
 
     def add_order_details(self, order_details: OrderDetails, customer_id: int):
         SQL_query: str = self.queries_data["add_order_details"]
-        SQL_values_list = list(order_details.__dict__.values())
+        SQL_values_list = list(order_details.__dict__.values())[:-2]
         SQL_values_list.append(customer_id)
         SQL_values_tuple = tuple(SQL_values_list)
         with Database(function_name="Add order details") as database:
