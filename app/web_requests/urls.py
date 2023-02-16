@@ -25,3 +25,13 @@ class Urls(RequestComponent):
     def create_invoice(self) -> str:
         url: str = self.__urls["create_invoice"]
         return url
+
+    def get_invoice(self, invoice_id: str) -> str:
+        url: str = self.__urls["get_invoice"].replace("{invoice_id}", invoice_id)
+        return url
+
+    def exchange_rate(self, date: str, currency: str) -> str:
+        url: str = self.__urls["exchange_rate"]
+        url = url.replace("{date}", date)
+        url = url.replace("{currency}", currency)
+        return url

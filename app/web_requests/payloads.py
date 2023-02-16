@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Dict
 import json
-
 
 from app.settings import ROOT_DIR
 from app.web_requests.request_component import RequestComponent
+from app.data_models.invoice.invoice_details import InvoiceDetails
+from app.utils.invoice_payload_handler import InvoicePayloadHandler
 
 
 @dataclass
@@ -18,25 +19,17 @@ class Payloads(RequestComponent):
         payload["refresh_token"] = payload["refresh_token"].replace("{refresh_token}", self.__credentials["ebay_refresh_token"])
         return payload
 
-    def create_invoice(self, order_data: Dict) -> Dict:
-        payload: str = json.dumps(self.__payloads["create_invoice"])
-        return json.loads(self.replace_invoice_payload(payload, order_data))
-
-    def replace_invoice_payload(self, payload: str, order_data: Dict) -> str:
-        for invoice_key in order_data.keys():
-            if invoice_key != "{items}":
-                payload = payload.replace(invoice_key, order_data[invoice_key])
-            else:
-                items_payload_str = self.replace_items(order_data[invoice_key])
-                payload = payload.replace("\"{items}\"", items_payload_str)
-        return payload
-
-    def replace_items(self, items: List) -> str:
-        items_invoice: List = []
-        for item in items:
-            item_invoice = json.dumps(self.__payloads["replace_item_payload"])
-            for item_key in item.keys():
-                item_invoice = item_invoice.replace(item_key, item[item_key])
-            items_invoice.append(item_invoice)
-        items_invoice_str: str = ", ". join(item for item in items_invoice)
-        return items_invoice_str
+    def create_invoice(self, invoice_details: InvoiceDetails):
+        invoice_payload_handler = InvoicePayloadHandler()
+        payload = self.__payloads["create_invoice"]
+        payload["buyer"] = invoice_payload_handler.replace_customer_details(self.__payloads["customer_payload"], invoice_details.customer_details)
+        payload["positions"] = invoice_payload_handler.replace_items_details(self.__payloads["item_payload"], invoice_details.items_details)
+        payload = json.dumps(payload)
+        payload_replace_elements = {"{issue_date}": invoice_details.issue_date, "{service_date}":  invoice_details.service_date, "{currency}": invoice_details.currency, "{rate}": invoice_details.rate}
+        for key, value in payload_replace_elements.items():
+            payload = payload.replace(key, value)
+        if invoice_details.paid_amount is not None:
+            payload = payload.replace("{paid_amount}", invoice_details.paid_amount)
+        else:
+            payload = payload.replace("{paid_amount}", "0")
+        return payload.encode("utf-8")

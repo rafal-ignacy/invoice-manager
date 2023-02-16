@@ -6,7 +6,7 @@ import requests
 @dataclass
 class WebRequest:
     url: str
-    headers: Dict
+    headers: Optional[Dict] = None
     payload: Optional[Dict] = None
 
     def response(self):
@@ -16,6 +16,9 @@ class WebRequest:
             request = requests.get(self.url, headers=self.headers, timeout=10)
 
         if request.status_code == 200:
-            return request.json()
+            if request.headers.get("Content-Type") == "application/json" or request.headers.get("Content-Type") == "application/json; charset=utf-8":
+                return request.json()
+            else:
+                return request.content
         else:
             raise request.raise_for_status()

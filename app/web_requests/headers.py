@@ -31,3 +31,8 @@ class Headers(RequestComponent):
         headers: Dict = self.__headers["create_invoice"]
         headers["ApiUserCompanyRoleKey"] = headers["ApiUserCompanyRoleKey"].replace("{ing_api_key}", self.__credentials["ing_api_key"])
         return headers
+
+    def get_invoice(self) -> Dict:
+        headers: Dict = self.__headers["get_invoice"]
+        headers["ApiUserCompanyRoleKey"] = headers["ApiUserCompanyRoleKey"].replace("{ing_api_key}", self.__credentials["ing_api_key"])
+        return headers

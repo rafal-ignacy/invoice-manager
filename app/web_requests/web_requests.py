@@ -7,6 +7,7 @@ from app.web_requests.urls import Urls
 from app.web_requests.headers import Headers
 from app.web_requests.payloads import Payloads
 from app.utils.logger import Logger
+from app.data_models.invoice.invoice_details import InvoiceDetails
 
 
 @dataclass
@@ -39,17 +40,30 @@ class WebRequests:
         response: Dict = self.execute_request(request, "eBay get order")
         return response
 
-    def create_invoice(self, order_data: Dict) -> Dict:
+    def create_invoice(self, invoice_details: InvoiceDetails) -> Dict:
         url: str = self.urls.create_invoice()
         headers: Dict = self.headers.create_invoice()
-        payload: Dict = self.payloads.create_invoice(order_data)
+        payload: Dict = self.payloads.create_invoice(invoice_details)
         request: WebRequest = WebRequest(url, headers, payload)
         response: Dict = self.execute_request(request, "ING API create invoice")
         return response
 
-    def execute_request(self, request, message) -> Dict:
+    def get_invoice(self, invoice_id: int) -> bytes:
+        url: str = self.urls.get_invoice(str(invoice_id))
+        headers: Dict = self.headers.get_invoice()
+        request: WebRequest = WebRequest(url, headers)
+        response: bytes = self.execute_request(request, "ING API get invoice")
+        return response
+
+    def exchange_rate(self, date: str, currency: str) -> Dict:
+        url: str = self.urls.exchange_rate(date, currency)
+        request: WebRequest = WebRequest(url)
+        response: Dict = self.execute_request(request, "NBP API exchange rate")
+        return response
+
+    def execute_request(self, request, message):
         try:
-            response: Dict = request.response()
+            response = request.response()
             self.logger.info(message)
         except HTTPError:
             self.logger.error(message)
