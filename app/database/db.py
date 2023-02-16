@@ -21,7 +21,7 @@ class Database:
             self.logger.error("Cannot connect to database")
         else:
             self.logger.info("Connected to database")
-        self.cursor = self.database.cursor()
+            self.cursor = self.database.cursor()
 
     def __enter__(self):
         return self

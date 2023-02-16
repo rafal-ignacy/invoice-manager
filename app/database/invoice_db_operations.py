@@ -36,3 +36,10 @@ class InvoiceDatabaseOperations(DatabaseOperations):
             database.cursor.execute(SQL_query)
             result: List = database.cursor.fetchall()
         return result
+
+    def add_invoice_id(self, order_id: int, invoice_id: int):
+        SQL_query: str = self.queries_data["add_invoice_id"].replace("{order_id}", str(order_id))
+        SQL_query = SQL_query.replace("{invoice_id}", str(invoice_id))
+        with Database(function_name="Add invoice ID") as database:
+            database.cursor.execute(SQL_query)
+            database.commit()
