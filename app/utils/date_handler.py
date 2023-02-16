@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import time
 
 
 class DateHandler:
@@ -7,7 +8,21 @@ class DateHandler:
         utc_subtracted: datetime = utc_now - timedelta(hours=hour_difference)
         return utc_subtracted.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
-    def convert_date(self, date: str) -> str:
+    def convert_date_from_ebay_format(self, date: str) -> str:
         datetime_object: datetime = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S")
-        datetime_converted: str = datetime.strftime(datetime_object, "%d/%m/%Y %H:%M:%S")
-        return datetime_converted
+        return datetime.strftime(datetime_object, "%d/%m/%Y %H:%M:%S")
+
+    def current_date(self) -> str:
+        current_date: datetime = datetime.now()
+        return datetime.strftime(current_date, "%Y-%m-%d")
+
+    def payment_date_local_zone(self, date: str) -> str:
+        now_timestamp = time.time()
+        offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
+        datetime_object: datetime = datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
+        return datetime.strftime(datetime_object + offset, "%Y-%m-%d")
+
+    def set_one_day_before(self, date: str) -> str:
+        main_date: datetime = datetime.strptime(date, "%Y-%m-%d")
+        date_one_day_before: datetime = main_date - timedelta(days=1)
+        return datetime.strftime(date_one_day_before, "%Y-%m-%d")
