@@ -1,14 +1,17 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict
 
 
 @dataclass
 class ResponseHandler:
-    def get_ebay_access_token(self, response) -> str:
+    def get_ebay_access_token(self, response: Dict) -> str:
         return response["access_token"]
 
-    def get_orders(self, response) -> List:
+    def get_orders(self, response: Dict) -> List:
         return response["orders"]
 
-    def create_invoice(self, response) -> str:
+    def create_invoice(self, response: Dict) -> int:
         return response["id"]
+
+    def exchange_rate(self, response: Dict) -> str:
+        return str(response["rates"][0]["mid"])
