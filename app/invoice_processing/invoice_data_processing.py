@@ -10,7 +10,7 @@ from app.utils.exchange_rate_handler import ExchangeRateHandler
 @dataclass
 class InvoiceDataProcessing:
     def __init__(self):
-        self.items_names: Dict = self.get_json(ROOT_DIR + r"\app\data\items_names.json")  # type: ignore
+        self.items_names: Dict = self.get_json(ROOT_DIR + r"/app/data/items_names.json")  # type: ignore
 
     def get_json(self, path) -> Dict:
         with open(path, "r", encoding="utf-8") as json_file:
