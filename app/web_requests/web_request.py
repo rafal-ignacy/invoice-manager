@@ -21,4 +21,5 @@ class WebRequest:
             else:
                 return request.content
         else:
+            print(request.text)
             raise request.raise_for_status()
