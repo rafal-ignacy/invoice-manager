@@ -13,8 +13,8 @@ class OrdersDatabaseOperations(DatabaseOperations):
     def __init__(self):
         self.queries_data = self.get_queries_data()
 
-    def check_order_existence_in_database(self, order_ebay_id: str) -> bool:
-        SQL_query: str = self.queries_data["check_order_existence_in_database"].replace("{order_ebay_id}", order_ebay_id)
+    def check_order_existence_in_database(self, platform_order_id: str | int) -> bool:
+        SQL_query: str = self.queries_data["check_order_existence_in_database"].replace("{platform_order_id}", str(platform_order_id))
         with Database(function_name="Check order existence in database") as database:
             database.cursor.execute(SQL_query)
             result = database.cursor.fetchall()[0][0]
