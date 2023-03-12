@@ -26,16 +26,16 @@ class WebRequests:
         response: Dict = self.execute_request(request, "eBay get access token")
         return response
 
-    def get_orders(self, date: str, access_token: str) -> Dict:
-        url: str = self.urls.get_orders(date)
-        headers: Dict = self.headers.get_orders(access_token)
+    def get_ebay_orders(self, date: str, access_token: str) -> Dict:
+        url: str = self.urls.get_ebay_orders(date)
+        headers: Dict = self.headers.get_ebay_orders(access_token)
         request: WebRequest = WebRequest(url, headers)
         response: Dict = self.execute_request(request, "eBay get orders")
         return response
 
-    def get_order(self, order_id: str, access_token: str) -> Dict:
-        url: str = self.urls.get_order(order_id)
-        headers: Dict = self.headers.get_order(access_token)
+    def get_ebay_order(self, order_id: str, access_token: str) -> Dict:
+        url: str = self.urls.get_ebay_order(order_id)
+        headers: Dict = self.headers.get_ebay_order(access_token)
         request: WebRequest = WebRequest(url, headers)
         response: Dict = self.execute_request(request, "eBay get order")
         return response
@@ -45,6 +45,7 @@ class WebRequests:
         headers: Dict = self.headers.create_invoice()
         payload: Dict = self.payloads.create_invoice(invoice_details)
         request: WebRequest = WebRequest(url, headers, payload)
+        print(payload)
         response: Dict = self.execute_request(request, "ING API create invoice")
         return response
 
@@ -59,6 +60,21 @@ class WebRequests:
         url: str = self.urls.exchange_rate(date, currency)
         request: WebRequest = WebRequest(url)
         response: Dict = self.execute_request(request, "NBP API exchange rate")
+        return response
+
+    def get_etsy_access_token(self) -> Dict:
+        url: str = self.urls.get_etsy_access_token()
+        headers: Dict = self.headers.get_etsy_access_token()
+        payload: Dict = self.payloads.get_etsy_access_token()
+        request: WebRequest = WebRequest(url, headers, payload)
+        response: Dict = self.execute_request(request, "Etsy get access token")
+        return response
+
+    def get_etsy_orders(self, timestamp: int, access_token: str) -> Dict:
+        url: str = self.urls.get_etsy_orders(timestamp)
+        headers: Dict = self.headers.get_etsy_orders(access_token)
+        request: WebRequest = WebRequest(url, headers)
+        response: Dict = self.execute_request(request, "Etsy get orders")
         return response
 
     def execute_request(self, request, message):

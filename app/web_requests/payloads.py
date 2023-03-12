@@ -11,8 +11,8 @@ from app.utils.invoice_payload_handler import InvoicePayloadHandler
 @dataclass
 class Payloads(RequestComponent):
     def __init__(self) -> None:
-        self.__payloads = self.get_file_data_dict(ROOT_DIR + r"\app\data\payloads.json")
-        self.__credentials = self.get_file_data_dict(ROOT_DIR + r"\app\data\credentials.json")
+        self.__payloads = self.get_file_data_dict(ROOT_DIR + r"/app/data/payloads.json")
+        self.__credentials = self.get_file_data_dict(ROOT_DIR + r"/app/data/credentials.json")
 
     def get_ebay_access_token(self) -> Dict:
         payload: Dict = self.__payloads["get_ebay_access_token"]
@@ -33,3 +33,9 @@ class Payloads(RequestComponent):
         else:
             payload = payload.replace("{paid_amount}", "0")
         return payload.encode("utf-8")
+
+    def get_etsy_access_token(self) -> Dict:
+        payload: Dict = self.__payloads["get_etsy_access_token"]
+        payload["client_id"] = payload["client_id"].replace("{client_id}", self.__credentials["etsy_client_id"])
+        payload["refresh_token"] = payload["refresh_token"].replace("{refresh_token}", self.__credentials["etsy_refresh_token"])
+        return payload
