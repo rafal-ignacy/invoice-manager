@@ -8,6 +8,11 @@ class DateHandler:
         utc_subtracted: datetime = utc_now - timedelta(hours=hour_difference)
         return utc_subtracted.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
+    def get_orders_utc_delta_timestamp(self, hour_difference: int) -> int:
+        utc_now: datetime = datetime.utcnow()
+        utc_subtracted: datetime = utc_now - timedelta(hours=hour_difference)
+        return int(utc_subtracted.timestamp())
+
     def convert_date_from_ebay_format(self, date: str) -> str:
         datetime_object: datetime = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S")
         return datetime.strftime(datetime_object, "%d/%m/%Y %H:%M:%S")
@@ -26,3 +31,7 @@ class DateHandler:
         main_date: datetime = datetime.strptime(date, "%Y-%m-%d")
         date_one_day_before: datetime = main_date - timedelta(days=1)
         return datetime.strftime(date_one_day_before, "%Y-%m-%d")
+
+    def convert_date_from_timestamp(self, timestamp: int) -> str:
+        datetime_object: datetime = datetime.fromtimestamp(timestamp)
+        return datetime.strftime(datetime_object, "%d/%m/%Y %H:%M:%S")

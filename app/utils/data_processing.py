@@ -24,3 +24,6 @@ class DataProcessing:
         for item in items_list:
             if item.sku is not None:
                 item.sku = item.sku[:-3]
+
+    def uppercase_payment_status(self, payment_status: str) -> str:
+        return payment_status.upper()
