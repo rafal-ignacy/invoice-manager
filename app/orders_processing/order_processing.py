@@ -1,29 +1,16 @@
 from dataclasses import dataclass
-from typing import List
 
-from app.database.orders_db_operations import OrdersDatabaseOperations
 from app.utils.data_processing import DataProcessing
-from app.orders_processing.order_data_handler import OrderDataHandler
 
 
 @dataclass
-class OrdersProcessing:
-    def __init__(self):
-        self.orders_list = []
-        self.database_operations = OrdersDatabaseOperations()
-
-    def get_orders_data(self, ebay_orders_list: List):
-        order_data_handler = OrderDataHandler()
-        for ebay_order in ebay_orders_list:
-            self.orders_list.append(order_data_handler.get_details(ebay_order))
-        self.orders_list.reverse()
-
+class OrderProcessing:
     def check_orders_existence_in_database(self) -> None:
-        for order_index in range(len(self.orders_list) - 1, -1, -1):
-            order_ebay_id: str = self.orders_list[order_index].order_ebay_id  # type: ignore
-            result = self.database_operations.check_order_existence_in_database(order_ebay_id)
+        for order_index in range(len(self.orders_list) - 1, -1, -1):  # type: ignore
+            platform_order_id: str = self.orders_list[order_index].platform_order_id  # type: ignore
+            result = self.database_operations.check_order_existence_in_database(platform_order_id)  # type: ignore
             if result is True:
-                self.orders_list.pop(order_index)
+                self.orders_list.pop(order_index)  # type: ignore
 
     def prepare_orders_data_to_database(self):
         data_processing = DataProcessing()
