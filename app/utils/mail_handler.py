@@ -35,7 +35,7 @@ class MailHandler:
         smtp_server.quit()
 
     def send(self, invoice_binary_list):
-        mail_address, mail_password = self.get_credentials(ROOT_DIR + r"\app\data\credentials.json")
+        mail_address, mail_password = self.get_credentials(ROOT_DIR + r"/app/data/credentials.json")
         message = self.prepare_message(mail_address)
         self.attach_files(message, invoice_binary_list)
         self.send_message(message, mail_address, mail_password)
