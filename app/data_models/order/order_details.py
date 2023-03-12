@@ -7,7 +7,7 @@ from app.data_models.order.item_details import ItemDetails
 
 @dataclass
 class OrderDetails:
-    order_ebay_id: str
+    platform_order_id: str
     platform: str
     order_date: str
     currency: str
