@@ -34,6 +34,7 @@ class EbayOrderDataHandler(OrderDataHandler):
                     break
                 object_dict[key] = order_dict_flatten.get(object_dict_key)
             if item_index is not None:
+                object_dict["price"] = object_dict["price"] / object_dict["quantity"]
                 items_list.append(ItemDetails(object_dict["item_ebay_id"], object_dict["sku"], object_dict["quantity"], object_dict["price"]))
                 item_index += 1
         return items_list
