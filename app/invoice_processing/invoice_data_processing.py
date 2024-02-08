@@ -34,7 +34,10 @@ class InvoiceDataProcessing:
         customer_details_dict: Dict = {}
         EMAIL, FULL_NAME, ADDRESS_STREET1, ADDRESS_STREET2,  = 0, 1, 2, 3
         CITY, POST_CODE, STATE_OR_PROVINCE, COUNTRY_CODE = 4, 5, 6, 7
-        customer_details_dict["email"] = customer_details[EMAIL]
+        if customer_details[EMAIL] is not None:
+            customer_details_dict["email"] = customer_details[EMAIL]
+        else:
+            customer_details_dict["email"] = "noemail@noemail.com"
         customer_details_dict["full_name"] = customer_details[FULL_NAME]
         customer_details_dict["address_street"] = customer_details[ADDRESS_STREET1]
         customer_details_dict["city"] = customer_details[CITY]
