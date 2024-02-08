@@ -8,5 +8,6 @@ data/
 .mypy_cache/
 .pytest_cache/
 setup.cfg
+log
+temp/
 logs/
-Dockerfile
