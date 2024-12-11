@@ -19,8 +19,8 @@ graph LR
     end
     A --> C
     B --> C
-    C --> E[database]
+    C --> E[MySQL database]
     D --> E
-    D --> F[Invoice management system API 
+    D --> F[invoice management system API 
     ING Księgowość]
 ```
